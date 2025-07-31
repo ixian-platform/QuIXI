@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuIXI", "QuIXI\QuIXI.csproj", "{23740B18-88FB-44E7-9FE7-0361E79C2831}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "IXICore", "..\Ixian-Core\IXICore.shproj", "{80487C64-619A-4B60-97BD-ED7670BF45B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23740B18-88FB-44E7-9FE7-0361E79C2831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23740B18-88FB-44E7-9FE7-0361E79C2831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23740B18-88FB-44E7-9FE7-0361E79C2831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23740B18-88FB-44E7-9FE7-0361E79C2831}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C14666C-003A-4365-BBAE-A180F067DE9A}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Ixian-Core\IXICore.projitems*{23740b18-88fb-44e7-9fe7-0361e79c2831}*SharedItemsImports = 5
+		..\Ixian-Core\IXICore.projitems*{80487c64-619a-4b60-97bd-ed7670bf45b3}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal
