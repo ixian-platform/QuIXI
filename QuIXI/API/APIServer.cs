@@ -8,11 +8,6 @@ namespace QuIXI
 {
     class APIServer : GenericAPIServer
     {
-        public APIServer(List<string> listen_URLs, Dictionary<string, string> authorized_users = null, List<string> allowed_IPs = null)
-        {
-            start(listen_URLs, authorized_users, allowed_IPs);
-        }
-
         protected override bool processRequest(HttpListenerContext context, string methodName, Dictionary<string, object> parameters)
         {
             JsonResponse response = null;
@@ -128,8 +123,7 @@ namespace QuIXI
                 return new JsonResponse { result = null, error = error };
             }
             friend.approved = true;
-            friend.save();
-            CoreStreamProcessor.sendAcceptAdd2(friend, true);
+            CoreStreamProcessor.sendAcceptAdd2(friend);
 
             return new JsonResponse { result = friend, error = null };
         }

@@ -71,6 +71,14 @@ namespace QuIXI.Network
                                 using (BinaryReader reader = new BinaryReader(m))
                                 {
                                     CoreProtocolMessage.processHelloMessageV6(endpoint, reader);
+
+                                    Friend friend = FriendList.getFriend(endpoint.presence.wallet);
+                                    if (friend != null)
+                                    {
+                                        friend.updatedStreamingNodes = Clock.getNetworkTimestamp();
+                                        friend.relayNode = new Peer(endpoint.getFullAddress(true), endpoint.presence.wallet, Clock.getTimestamp(), Clock.getTimestamp(), Clock.getTimestamp(), 0);
+                                        friend.online = true;
+                                    }
                                 }
                             }
 
@@ -147,20 +155,27 @@ namespace QuIXI.Network
                                         StreamProcessor.fetchAllFriendsPresencesInSector(endpoint.presence.wallet);
                                     }
                                 }
-                                else if (node_type == 'C')
-                                {
-                                    Friend f = FriendList.getFriend(endpoint.presence.wallet);
-                                    if (f != null && f.bot)
-                                    {
-                                        CoreStreamProcessor.sendGetBotInfo(f);
-                                    }
-                                }
 
                                 if (node_type == 'M'
                                     || node_type == 'H'
                                     || node_type == 'R')
                                 {
                                     subscribeToEvents(endpoint);
+                                }
+
+                                Friend friend = FriendList.getFriend(endpoint.presence.wallet);
+                                if (friend != null)
+                                {
+                                    friend.updatedStreamingNodes = Clock.getNetworkTimestamp();
+                                    friend.relayNode = new Peer(endpoint.getFullAddress(true), endpoint.presence.wallet, Clock.getTimestamp(), Clock.getTimestamp(), Clock.getTimestamp(), 0);
+                                    friend.online = true;
+                                    if (node_type == 'C')
+                                    {
+                                        if (friend.bot)
+                                        {
+                                            CoreStreamProcessor.sendGetBotInfo(friend);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -403,7 +418,7 @@ namespace QuIXI.Network
         {
             byte[] hash = CryptoManager.lib.sha3_512sqTrunc(data);
 
-            InventoryCache.Instance.setProcessedFlag(InventoryItemTypes.keepAlive, hash, true);
+            InventoryCache.Instance.setProcessedFlag(InventoryItemTypes.keepAlive, hash);
 
             Address address = null;
             long last_seen = 0;
@@ -560,7 +575,7 @@ namespace QuIXI.Network
                         {
                             PendingTransactions.increaseReceivedCount(item.hash, endpoint.presence.wallet);
                         }
-                        PendingInventoryItem pii = InventoryCache.Instance.add(item, endpoint);
+                        PendingInventoryItem pii = InventoryCache.Instance.add(item, endpoint, false);
 
                         // First update endpoint blockheights
                         switch (item.type)
@@ -601,7 +616,7 @@ namespace QuIXI.Network
                                     var iib = ((InventoryItemBlock)item);
                                     if (iib.blockNum <= last_accepted_block_height)
                                     {
-                                        InventoryCache.Instance.setProcessedFlag(iib.type, iib.hash, true);
+                                        InventoryCache.Instance.setProcessedFlag(iib.type, iib.hash);
                                         continue;
                                     }
 
@@ -616,6 +631,7 @@ namespace QuIXI.Network
 
                                 default:
                                     Logging.warn("Unhandled inventory item {0}", item.type);
+                                    InventoryCache.Instance.setProcessedFlag(item.type, item.hash);
                                     break;
                             }
                         }
@@ -631,9 +647,8 @@ namespace QuIXI.Network
         static void requestNextBlock(ulong blockNum, byte[] blockHash, RemoteEndpoint endpoint)
         {
             InventoryItemBlock iib = new InventoryItemBlock(blockHash, blockNum);
-            PendingInventoryItem pii = InventoryCache.Instance.add(iib, endpoint);
-            if (!pii.processed
-                && pii.lastRequested == 0)
+            PendingInventoryItem pii = InventoryCache.Instance.add(iib, endpoint, true);
+            if (pii.lastRequested == 0)
             {
                 pii.lastRequested = Clock.getTimestamp();
                 InventoryCache.Instance.processInventoryItem(pii);

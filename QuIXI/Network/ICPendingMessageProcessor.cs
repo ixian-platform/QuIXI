@@ -14,7 +14,16 @@ namespace QuIXI.Network
 
         protected override void onMessageSent(Friend friend, int channel, StreamMessage msg)
         {
-            Node.messageQueue.PublishAsync(MQTopics.MessageSent, msg);
+            // TODO trigger sent from pending message, not just offline?
+            friend.setMessageSent(channel, msg.id);
+            Node.messageQueue.PublishAsync(MQTopics.MessageSent, msg.id);
+        }
+
+        protected override void onMessageExpired(Friend friend, int channel, StreamMessage msg)
+        {
+            removeMessage(friend, msg.id);
+            friend.setMessageError(channel, msg.id);
+            Node.messageQueue.PublishAsync(MQTopics.MessageExpired, msg.id);
         }
     }
 }

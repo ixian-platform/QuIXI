@@ -54,6 +54,7 @@ namespace QuIXI.MQ
         // Misc Messages
         public static readonly string FriendStatusUpdate = "FriendStatusUpdate";
         public static readonly string MessageSent = "MessageSent";
+        public static readonly string MessageExpired = "MessageExpired";
         public static readonly string TransactionStatusUpdate = "TransactionStatusUpdate";
         
 

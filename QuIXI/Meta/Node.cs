@@ -45,8 +45,6 @@ namespace QuIXI.Meta
 
         private void init()
         {
-            CoreConfig.simultaneousConnectedNeighbors = 6;
-
             IxianHandler.init(Config.version, this, Config.networkType, false, Config.checksumLock);
 
             // Load or Generate the wallet
@@ -65,6 +63,9 @@ namespace QuIXI.Meta
             networkClientManagerStatic = new NetworkClientManagerStatic(Config.maxRelaySectorNodesToConnectTo);
             NetworkClientManager.init(networkClientManagerStatic);
 
+            // Prepare the stream processor
+            streamProcessor = new StreamProcessor(new ICPendingMessageProcessor(Config.userFolder, false), Config.streamCapabilities);
+
             // Init TIV
             tiv = new TransactionInclusion(new ICTransactionInclusionCallbacks(), false);
 
@@ -74,6 +75,14 @@ namespace QuIXI.Meta
             IxianHandler.localStorage = new LocalStorage(Config.userFolder, new ICLocalStorageCallbacks());
 
             FriendList.init(Config.userFolder);
+
+            UpdateVerify.init(Config.checkVersionUrl, Config.checkVersionSeconds);
+
+            // TODO Maybe enable push notifications at some point
+
+            InventoryCache.init(new InventoryCacheClient(tiv));
+
+            RelaySectors.init(CoreConfig.relaySectorLevels, null);
 
             Logging.info("Node init done");
         }
@@ -117,12 +126,6 @@ namespace QuIXI.Meta
 
             FriendList.loadContacts();
 
-            // Prepare the stream processor
-            streamProcessor = new StreamProcessor(new ICPendingMessageProcessor(Config.userFolder, false), Config.streamCapabilities);
-
-            // TODO Maybe enable push notifications at some point
-
-            UpdateVerify.init(Config.checkVersionUrl, Config.checkVersionSeconds);
             UpdateVerify.start();
 
             ulong block_height = 0;
@@ -151,14 +154,12 @@ namespace QuIXI.Meta
             // Start the network queue
             NetworkQueue.start();
 
-            ActivityStorage.prepareStorage();
-
-            InventoryCache.init(new InventoryCacheClient(tiv));
-
-            RelaySectors.init(CoreConfig.relaySectorLevels, null);
+            streamProcessor.start();
 
             // Start the keepalive thread
             PresenceList.startKeepAlive();
+
+            ActivityStorage.prepareStorage();
 
             mainLoopThread = new Thread(mainLoop);
             mainLoopThread.Name = "Main_Loop_Thread";
@@ -169,7 +170,8 @@ namespace QuIXI.Meta
                 Config.apiBinds.Add("http://localhost:" + Config.apiPort + "/");
             }
 
-            apiServer = new APIServer(Config.apiBinds, Config.apiUsers, Config.apiAllowedIps);
+            apiServer = new APIServer();
+            apiServer.start(Config.apiBinds, Config.apiUsers, Config.apiAllowedIps);
 
             Logging.info("Node started");
 
@@ -303,7 +305,7 @@ namespace QuIXI.Meta
             }
 
             // Stop the stream processor
-            streamProcessor.uninitialize();
+            streamProcessor.stop();
 
             IxianHandler.localStorage.stop();
 
