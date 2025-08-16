@@ -42,14 +42,17 @@ namespace QuIXI.MQ.Drivers
             }
         }
 
-        protected override Task PublishRawAsync(string topic, byte[] data)
+        protected override async Task PublishRawAsync(string topic, byte[] data)
         {
             var msg = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
                 .WithPayload(data)
                 .Build();
 
-            return _client.PublishAsync(msg);
+
+            await ConnectAsync();
+
+            await _client.PublishAsync(msg);
         }
 
         private async Task OnMqttMessage(MqttApplicationMessageReceivedEventArgs ev)

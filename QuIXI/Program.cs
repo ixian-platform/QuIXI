@@ -121,7 +121,6 @@ namespace QuIXI
             node?.stop();
 
             // Stop logging
-            Logging.flush();
             Logging.stop();
 
             Console.WriteLine("");

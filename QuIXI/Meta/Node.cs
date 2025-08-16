@@ -217,32 +217,39 @@ namespace QuIXI.Meta
                 getBalanceBytes = mw.ToArray();
             }
 
-            while (running)
+            try
             {
-                try
+                while (running)
                 {
-                    // Update the friendlist
-                    updateFriendStatuses();
-
-                    // Cleanup the presence list
-                    // TODO: optimize this by using a different thread perhaps
-                    PresenceList.performCleanup();
-
-                    Balance balance = IxianHandler.balances.First();
-                    // Request initial wallet balance
-                    if (balance.blockHeight == 0 || balance.lastUpdate + 300 < Clock.getTimestamp())
+                    try
                     {
-                        CoreProtocolMessage.broadcastProtocolMessage(['M', 'H', 'R'], ProtocolMessageCode.getBalance2, getBalanceBytes, null);
-                        CoreProtocolMessage.fetchSectorNodes(IxianHandler.primaryWalletAddress, CoreConfig.maxRelaySectorNodesToRequest);
-                        //ProtocolMessage.fetchAllFriendsSectorNodes(10);
-                        //StreamProcessor.fetchAllFriendsPresences(10);
+                        // Update the friendlist
+                        updateFriendStatuses();
+
+                        // Cleanup the presence list
+                        // TODO: optimize this by using a different thread perhaps
+                        PresenceList.performCleanup();
+
+                        Balance balance = IxianHandler.balances.First();
+                        // Request initial wallet balance
+                        if (balance.blockHeight == 0 || balance.lastUpdate + 300 < Clock.getTimestamp())
+                        {
+                            CoreProtocolMessage.broadcastProtocolMessage(['M', 'H', 'R'], ProtocolMessageCode.getBalance2, getBalanceBytes, null);
+                            CoreProtocolMessage.fetchSectorNodes(IxianHandler.primaryWalletAddress, CoreConfig.maxRelaySectorNodesToRequest);
+                            //ProtocolMessage.fetchAllFriendsSectorNodes(10);
+                            //StreamProcessor.fetchAllFriendsPresences(10);
+                        }
                     }
+                    catch (Exception e)
+                    {
+                        Logging.error("Exception occured in mainLoop: " + e);
+                    }
+                    Thread.Sleep(2500);
                 }
-                catch (Exception e)
-                {
-                    Logging.error("Exception occured in mainLoop: " + e);
-                }
-                Thread.Sleep(2500);
+            }
+            catch (ThreadInterruptedException)
+            {
+
             }
         }
 
@@ -342,8 +349,6 @@ namespace QuIXI.Meta
             IxianHandler.status = NodeStatus.stopped;
 
             Logging.info("Node stopped");
-
-            Logging.stop();
 
             statsConsoleScreen.stop();
         }
