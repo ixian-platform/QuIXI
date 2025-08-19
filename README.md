@@ -29,6 +29,7 @@ QuIXI requires [.NET 8 SDK & Runtime](https://dotnet.microsoft.com/en-us/downloa
 ### 2. Clone & Build
 
 ```bash
+git clone https://github.com/ixian-platform/Ixian-Core.git
 git clone https://github.com/ixian-platform/QuIXI.git
 cd QuIXI
 dotnet build
