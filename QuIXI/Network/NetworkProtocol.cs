@@ -505,9 +505,10 @@ namespace QuIXI.Network
             {
                 Node.networkClientManagerStatic.setClientsToConnectTo(peers);
             }
-            else
+
+            var friends = FriendList.getFriendsBySectorPrefix(prefix);
+            foreach (var friend in friends)
             {
-                var friend = FriendList.getFriendBySectorPrefix(prefix);
                 friend.updatedSectorNodes = Clock.getNetworkTimestamp();
                 friend.sectorNodes = peers;
             }

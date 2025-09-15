@@ -122,7 +122,10 @@ namespace QuIXI.Meta
 
             // Start local storage
             IxianHandler.localStorage.start();
-            IxianHandler.localStorage.nickname = Config.friendlyName;
+            if (IxianHandler.localStorage.nickname == "")
+            {
+                IxianHandler.localStorage.nickname = Config.friendlyName;
+            }
 
             FriendList.loadContacts();
 
@@ -558,12 +561,6 @@ namespace QuIXI.Meta
                         friend.metaData.unreadMessageCount++;
 
                     friend.saveMetaData();
-                }
-
-                // Only send alerts if this is a new message
-                if (oldMessage == false)
-                {
-                    messageQueue.PublishAsync(MQTopics.Chat, friend_message);
                 }
             }
             return friend_message;

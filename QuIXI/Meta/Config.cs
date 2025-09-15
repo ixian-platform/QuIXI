@@ -95,9 +95,10 @@ namespace QuIXI.Meta
             Console.WriteLine("    --maxLogSize\t Specify maximum log file size in MB");
             Console.WriteLine("    --maxLogCount\t Specify maximum number of log files");
             Console.WriteLine("    --logVerbosity\t Sets log verbosity (0 = none, trace = 1, info = 2, warn = 4, error = 8)");
-            Console.WriteLine("    --checksumLock\t\t Sets the checksum lock for seeding checksums - useful for custom networks.");
-            Console.WriteLine("    --verboseOutput\t\t Starts node with verbose output.");
-            Console.WriteLine("    --networkType\t\t mainnet, testnet or regtest.");
+            Console.WriteLine("    --checksumLock\t Sets the checksum lock for seeding checksums - useful for custom networks.");
+            Console.WriteLine("    --verboseOutput\t Starts node with verbose output.");
+            Console.WriteLine("    --networkType\t mainnet, testnet or regtest.");
+            Console.WriteLine("    --name\t\t Specify the name of this QuIXI");
             Console.WriteLine("");
             Console.WriteLine("----------- Developer CLI flags -----------");
             Console.WriteLine("    --walletPassword\t Specify the password for the wallet.");
@@ -125,6 +126,7 @@ namespace QuIXI.Meta
             Console.WriteLine("    mqHost\t\t Message Queue Hostname");
             Console.WriteLine("    mqPort\t\t Message Queue port");
             Console.WriteLine("    streamCapabilities\t Stream capabilities - Incoming, Outgoing, IPN, Apps, AppProtocols");
+            Console.WriteLine("    name\t\t Specify the name of this QuIXI");
 
             Environment.Exit(0);
         }
@@ -273,6 +275,9 @@ namespace QuIXI.Meta
                     case "streamCapabilites":
                         streamCapabilities = (StreamCapabilities)int.Parse(value);
                         break;
+                    case "name":
+                        friendlyName = value;
+                        break;
                     default:
                         // unknown key
                         Logging.warn("Unknown config parameter was specified '" + key + "'");
@@ -336,6 +341,8 @@ namespace QuIXI.Meta
             cmd_parser.Setup<int>("maxLogCount").Callback(value => maxLogCount = value).Required();
 
             cmd_parser.Setup<bool>("onlyShowAddresses").Callback(value => onlyShowAddresses = true).Required();
+
+            cmd_parser.Setup<string>("name").Callback(value => friendlyName = value).Required();
 
             // Debug
 
