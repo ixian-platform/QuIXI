@@ -136,7 +136,7 @@ and streaming with Spixi Mini Apps.
 
 To use the camera + gate control interface, install the Example Gate Control Mini App in Spixi:
 
-https://resources.ixian.io/gatecontrol.spixi
+https://resources.ixian.io/gate-control.spixi
 
 ---
 

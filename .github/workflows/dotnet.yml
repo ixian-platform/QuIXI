@@ -1,0 +1,39 @@
+name: .NET
+
+on:
+  push:
+    branches: [ 'master', 'development' ]
+
+defaults:
+  run:
+    working-directory: QuIXI
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout QuIXI
+      uses: actions/checkout@v4
+      with:
+        path: QuIXI
+
+    - name: Checkout Ixian-Core
+      uses: actions/checkout@v4
+      with:
+        repository: ixian-platform/Ixian-Core
+        path: Ixian-Core
+        ref: ${{ github.ref_name }}
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Building QuIXI
+      run: dotnet build
+
