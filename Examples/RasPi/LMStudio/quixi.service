@@ -1,0 +1,16 @@
+[Unit]
+Description=QuIXI Startup Service
+After=network.target mosquitto.service
+Requires=mosquitto.service
+
+[Service]
+ExecStart=/root/start.sh
+WorkingDirectory=/root
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+

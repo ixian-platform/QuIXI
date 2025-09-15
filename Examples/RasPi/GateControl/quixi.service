@@ -1,5 +1,5 @@
 [Unit]
-Description=IXI Connect Startup Service
+Description=QuIXI Startup Service
 After=network.target mosquitto.service
 Requires=mosquitto.service
 

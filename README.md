@@ -204,7 +204,7 @@ Applications can subscribe to these topics to react to events in real time (IoT 
 
 ---
 
-## 💡 Example: Decentralized LED on Raspberry Pi 
+## 💡 Example: Decentralized LED on Raspberry Pi
 
 The repo includes `/Examples/RasPi/LED`, which contains two bash scripts that turn a Raspberry Pi into a
 **decentralized LED device**.
@@ -222,6 +222,18 @@ Example command flow:
 * Send **"temp"** → Device replies with its CPU temperature.
 
 This demonstrates how **any IoT device** can securely integrate into Ixian via QuIXI.
+
+---
+
+## 💡 Examples
+
+QuIXI comes with ready-to-run integration examples:
+
+* **[Decentralized LED](./Examples/RasPi/LED)** - Toggle a Raspberry Pi GPIO LED via Ixian chat
+* **[Camera & Gate Control](./Examples/RasPi/GateControl)** - Stream images to Spixi Mini Apps & control gates
+* **[LM Studio AI Chatbot](./Examples/RasPi/LMStudio)** - Bridge Ixian chat into a local LLM via LM Studio
+
+See [Examples README](./Examples/README.md) for details.
 
 ---
 

@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 
 # Subscribe to the topic
 mosquitto_sub -t "RequestAdd2/#" | while read -r message
