@@ -226,6 +226,7 @@ namespace QuIXI.Meta
                 {
                     try
                     {
+                        PeerStorage.savePeersFile();
                         // Update the friendlist
                         updateFriendStatuses();
 

@@ -8,7 +8,7 @@ Its name is a play on words:
 * **Qu (Quantum)** - future-ready with post-quantum cryptography
 * **qu (Queue)** - message queue support (MQTT / RabbitMQ)
 
-QuIXI lets you connect **anything** - devices, applications, or services - into Ixian's **secure, decentralized, and
+QuIXI lets you connect **anything** - devices, applications, AI Agents, or services - into Ixian's **secure, decentralized, and
 presence-based network**.
 
 It provides:

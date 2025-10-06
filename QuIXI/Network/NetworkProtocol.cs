@@ -572,15 +572,14 @@ namespace QuIXI.Network
                         ulong len = reader.ReadIxiVarUInt();
                         byte[] item_bytes = reader.ReadBytes((int)len);
                         InventoryItem item = InventoryCache.decodeInventoryItem(item_bytes);
-                        if (item.type == InventoryItemTypes.transaction)
-                        {
-                            PendingTransactions.increaseReceivedCount(item.hash, endpoint.presence.wallet);
-                        }
-                        PendingInventoryItem pii = InventoryCache.Instance.add(item, endpoint, false);
 
-                        // First update endpoint blockheights
+                        // First update endpoint blockheights and pending transactions
                         switch (item.type)
                         {
+                            case InventoryItemTypes.transaction:
+                                PendingTransactions.increaseReceivedCount(item.hash, endpoint.presence.wallet);
+                                break;
+
                             case InventoryItemTypes.block:
                                 var iib = ((InventoryItemBlock)item);
                                 if (iib.blockNum > endpoint.blockHeight)
@@ -589,6 +588,8 @@ namespace QuIXI.Network
                                 }
                                 break;
                         }
+
+                        PendingInventoryItem pii = InventoryCache.Instance.add(item, endpoint, false);
 
                         if (!pii.processed && pii.lastRequested == 0)
                         {
