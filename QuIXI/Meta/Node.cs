@@ -199,7 +199,7 @@ namespace QuIXI.Meta
             NetworkClientManager.start(2);
 
             // Start the s2 client manager
-            StreamClientManager.start(Config.maxConnectedStreamingNodes);
+            StreamClientManager.start(Config.maxConnectedStreamingNodes, !Config.exposePublicIP);
         }
 
         // Handle timer routines

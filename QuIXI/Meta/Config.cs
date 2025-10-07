@@ -65,7 +65,7 @@ namespace QuIXI.Meta
         public static int mqPort = 0;
 
         // expose own external IP:Port to PL
-        public static bool directConnection = false;
+        public static bool exposePublicIP = false;
 
         public static StreamCapabilities streamCapabilities = StreamCapabilities.Incoming | StreamCapabilities.AppProtocols;
 
