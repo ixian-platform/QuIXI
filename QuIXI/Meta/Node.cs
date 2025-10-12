@@ -309,6 +309,8 @@ namespace QuIXI.Meta
             Logging.info("Stopping node...");
             running = false;
 
+            PeerStorage.savePeersFile(true);
+
             if (messageQueue != null)
             {
                 messageQueue.DisconnectAsync();

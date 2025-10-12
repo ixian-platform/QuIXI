@@ -11,9 +11,9 @@ namespace QuIXI.Meta
     public class Config
     {
         // Read-only values
-        public static readonly string version = "xcc-0.9.0";
+        public static readonly string version = "qxc-0.9.1";
 
-        public static readonly string checkVersionUrl = "https://resources.ixian.io/xcc-update.txt";
+        public static readonly string checkVersionUrl = "https://resources.ixian.io/qxc-update.txt";
         public static readonly int checkVersionSeconds = 6 * 60 * 60; // 6 hours
 
         public static readonly int maximumStreamClients = 1000; // Maximum number of stream clients this server can accept
