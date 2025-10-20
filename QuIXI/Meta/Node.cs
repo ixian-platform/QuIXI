@@ -11,6 +11,7 @@ using IXICore.Storage;
 using IXICore.Streaming;
 using IXICore.Utils;
 using static IXICore.Transaction;
+using IXICore.Activity;
 
 namespace QuIXI.Meta
 {
@@ -35,6 +36,7 @@ namespace QuIXI.Meta
 
         private bool generatedNewWallet = false;
 
+        //public static IActivityStorage activityStorage;
 
         public Node()
         {
@@ -162,7 +164,8 @@ namespace QuIXI.Meta
             // Start the keepalive thread
             PresenceList.startKeepAlive();
 
-            ActivityStorage.prepareStorage();
+            //activityStorage = new ActivityStorage(Path.Combine(Environment.CurrentDirectory, "activity"), 32 << 20, 0);
+            //activityStorage.prepareStorage(true);
 
             mainLoopThread = new Thread(mainLoop);
             mainLoopThread.Name = "Main_Loop_Thread";
@@ -335,7 +338,7 @@ namespace QuIXI.Meta
                 apiServer = null;
             }
 
-            ActivityStorage.stopStorage();
+            //activityStorage.stopStorage();
 
             // Stop the network queue
             NetworkQueue.stop();
@@ -657,7 +660,9 @@ namespace QuIXI.Meta
         // Cleans the storage cache and logs
         public static bool cleanCacheAndLogs()
         {
-            ActivityStorage.deleteCache();
+            //activityStorage.stopStorage();
+            //activityStorage.deleteData();
+            //activityStorage.prepareStorage(false);
 
             PeerStorage.deletePeersFile();
 
