@@ -11,7 +11,7 @@ namespace QuIXI.Meta
     public class Config
     {
         // Read-only values
-        public static readonly string version = "qxc-0.9.1";
+        public static readonly string version = "qxc-0.9.1a";
 
         public static readonly string checkVersionUrl = "https://resources.ixian.io/qxc-update.txt";
         public static readonly int checkVersionSeconds = 6 * 60 * 60; // 6 hours
@@ -121,7 +121,6 @@ namespace QuIXI.Meta
             Console.WriteLine("    maxLogSize\t\t Specify maximum log file size in MB (same as --maxLogSize CLI)");
             Console.WriteLine("    maxLogCount\t\t Specify maximum number of log files (same as --maxLogCount CLI)");
             Console.WriteLine("    logVerbosity\t Sets log verbosity (same as --logVerbosity CLI)");
-            Console.WriteLine("    walletNotify\t Execute command when a wallet transaction changes");
             Console.WriteLine("    mqDriver\t\t Message Queue Driver - mqtt or rabbitmq");
             Console.WriteLine("    mqHost\t\t Message Queue Hostname");
             Console.WriteLine("    mqPort\t\t Message Queue port");
@@ -250,9 +249,6 @@ namespace QuIXI.Meta
                         break;
                     case "maxLogCount":
                         maxLogCount = int.Parse(value);
-                        break;
-                    case "walletNotify":
-                        CoreConfig.walletNotifyCommand = value;
                         break;
                     case "logVerbosity":
                         logVerbosity = int.Parse(value);

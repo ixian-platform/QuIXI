@@ -583,7 +583,7 @@ namespace QuIXI.Meta
         static public (Transaction transaction, List<Address> relayNodeAddresses) prepareTransactionFrom(Address fromAddress, Address toAddress, IxiNumber amount)
         {
             IxiNumber fee = ConsensusConfig.forceTransactionPrice;
-            SortedDictionary<Address, ToEntry> to_list = new(new AddressComparer());
+            Dictionary<Address, ToEntry> to_list = new(new AddressComparer());
             Balance address_balance = IxianHandler.balances.FirstOrDefault(addr => addr.address.addressNoChecksum.SequenceEqual(fromAddress.addressNoChecksum));
             Address pubKey = new(IxianHandler.getWalletStorage().getPrimaryPublicKey());
 
@@ -593,7 +593,7 @@ namespace QuIXI.Meta
                 return (null, null);
             }
 
-            SortedDictionary<byte[], IxiNumber> from_list = new(new ByteArrayComparer())
+            Dictionary<byte[], IxiNumber> from_list = new(new ByteArrayComparer())
             {
                 { IxianHandler.getWalletStorage().getAddress(fromAddress).nonce, amount }
             };
