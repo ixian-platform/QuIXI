@@ -36,10 +36,10 @@ namespace QuIXI.Meta
                     }
                 }
             }
-            if (friend != null)
-            {
-                Node.messageQueue.PublishAsync(MQTopics.TransactionStatusUpdate, (txid, verified));
-            }
+            var obj = new Dictionary<string, bool>();
+            obj.Add(Crypto.hashToString(txid), verified);
+
+            Node.messageQueue.PublishAsync(MQTopics.TransactionStatusUpdate, obj);
 
             IxianHandler.balances.First().lastUpdate = 0;
         }

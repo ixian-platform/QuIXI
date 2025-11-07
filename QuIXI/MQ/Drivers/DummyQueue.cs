@@ -1,4 +1,6 @@
-﻿using QuIXI.MQ.Serializers;
+﻿using IXICore.Meta;
+using QuIXI.MQ.Serializers;
+using System.Text;
 
 namespace QuIXI.MQ.Drivers
 {
@@ -19,6 +21,7 @@ namespace QuIXI.MQ.Drivers
 
         protected override Task PublishRawAsync(string topic, byte[] data)
         {
+            Logging.info($"Publishing to '{topic}': {UTF8Encoding.UTF8.GetString(data)}");
             return Task.CompletedTask;
         }
 

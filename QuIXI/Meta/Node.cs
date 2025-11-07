@@ -57,6 +57,8 @@ namespace QuIXI.Meta
                 return;
             }
 
+            Logging.info($"Initing Message Queue with Driver: {Config.mqDriver}");
+
             initMessageQueue();
 
             PeerStorage.init(Config.userFolder);

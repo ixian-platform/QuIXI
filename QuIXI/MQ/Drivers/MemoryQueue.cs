@@ -29,7 +29,7 @@ namespace QuIXI.MQ.Drivers
 
         protected override Task PublishRawAsync(string topic, byte[] data)
         {
-            Logging.info("Publishing: " + UTF8Encoding.UTF8.GetString(data));
+            Logging.trace($"Publishing to '{topic}': {UTF8Encoding.UTF8.GetString(data)}");
             var list = _messages.GetOrAdd(topic, _ => new List<byte[]>());
             list.Add(data);
 

@@ -26,11 +26,16 @@
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
     <PackageReference Include="FluentCommandLineParser" Version="1.4.3" />
     <PackageReference Include="MQTTnet" Version="5.0.1.1416" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Open.Nat" Version="2.1.0" />
-    <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="9.0.8" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.2.0" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="9.0.10" />
   </ItemGroup>
   
+  <Target Name="CopyHTMLToOutput" AfterTargets="CoreCompile">
+    <ItemGroup>
+      <IXIPB1 Include="$(SolutionDir)\..\Ixian-Core\html\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(IXIPB1)" DestinationFolder="$(OutputPath)\html\%(RecursiveDir)" ContinueOnError="true" />
+  </Target>
 </Project>
