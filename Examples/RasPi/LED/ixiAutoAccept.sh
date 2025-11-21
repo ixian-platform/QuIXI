@@ -4,6 +4,6 @@
 mosquitto_sub -t "RequestAdd2/#" | while read -r message
 do
     echo "Received: $message"
-    sender=$(echo "$message" | jq -r '.sender.base58Address // empty')
+    sender=$(echo "$message" | jq -r '.sender // empty')
     curl --get --data-urlencode "address=$sender" "localhost:8001/acceptContact"
 done

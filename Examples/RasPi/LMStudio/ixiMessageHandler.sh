@@ -30,7 +30,7 @@ lmstudio_request() {
 # Listen for MQTT messages
 mosquitto_sub -t "Chat/#" | while read -r message; do
     # Parse JSON message
-    data=$(echo "$message" | jq -rc '[.sender.base58Address,.data.data] | @tsv')
+    data=$(echo "$message" | jq -rc '[.sender,.data.data] | @tsv')
     sender=$(echo "$data" | awk '{print $1}')
     cmd=$(echo "$data" | awk '{print tolower($2)}')
     args="$(echo "$data" | cut -f2-)"

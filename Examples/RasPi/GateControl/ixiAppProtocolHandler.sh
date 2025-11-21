@@ -4,7 +4,7 @@ GPIO_PIN=11
 
 mosquitto_sub -t "AppProtocolData/#" | while read -r message; do
     read -r sender cmd <<< "$(
-        jq -rc '[.sender.base58Address, (.data.data.data | @base64d | fromjson | .action // empty)] | @tsv' <<< "$message"
+        jq -rc '[.sender, (.data.data.data | @base64d | fromjson | .action // empty)] | @tsv' <<< "$message"
     )"
 
     # Normalize to lowercase
